@@ -19,7 +19,7 @@ public class AHP {
         double[][] comparisonMatrix = new double[criteria][criteria];
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            while ((line = br.readLine()) != null ) {
+            while ((line = br.readLine()) != null && !line.contains("data") ) {
                 for(int j = 0; j < criteria; j++){
                     comparisonMatrix[i][j] = Double.parseDouble(line.split(split)[j]);
                     System.out.print(comparisonMatrix[i][j] +" ");
