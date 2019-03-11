@@ -6,17 +6,37 @@ import java.util.HashMap;
 
 public class AHP {
 
+    private double[][] comparisonMatrix,normalizeMatrix;
+    private double[] preferenceVector,matrixMultiplication;
+    private double consistencyIndex,lambdaMax,consistencyRatio;
+
     public AHP() {
 
     }
 
-    public double[][] createComparisonMatrix(File file) throws IOException {
+    public double[] getPreferenceVector() {
+        return preferenceVector;
+    }
+
+    public double[][] getComparisonMatrix() {
+        return comparisonMatrix;
+    }
+
+    public double[][] getNormalizeMatrix() {
+        return normalizeMatrix;
+    }
+
+    public double[] getMatrixMultiplication() {
+        return matrixMultiplication;
+    }
+
+    public double[][] getComparisonMatrix(File file) throws IOException {
         String line = "";
         int i = 0;
         String split = ",";
         BufferedReader brSize = new BufferedReader(new FileReader(file));
         int criteria = brSize.readLine().split(split).length;
-        double[][] comparisonMatrix = new double[criteria][criteria];
+        this.comparisonMatrix = new double[criteria][criteria];
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             while ((line = br.readLine()) != null && !line.contains("data") ) {
@@ -33,9 +53,9 @@ public class AHP {
         return comparisonMatrix;
     }
 
-    public double[][] normalizeMatrix(double[][] comparisonMatrix){
+    public double[][] normalizeMatrix(){
         double[] sumOfMatrix = new double[comparisonMatrix.length];
-        double[][] normalizeMatrix = new double[comparisonMatrix.length][comparisonMatrix.length];
+        this.normalizeMatrix = new double[comparisonMatrix.length][comparisonMatrix.length];
         for (int i = 0; i < comparisonMatrix.length; i++){
             for(int j = 0; j < comparisonMatrix[i].length; j++){
                 sumOfMatrix[i] += comparisonMatrix[j][i];
@@ -49,49 +69,53 @@ public class AHP {
         return normalizeMatrix;
     }
 
-    public double[] preferenceVector(double[][] normalizeMatrix){
-        double[] prefereneVectors = new double[normalizeMatrix.length];
+    public double[] createPreferenceVector(){
+        this.preferenceVector = new double[normalizeMatrix.length];
         for (int i = 0; i < normalizeMatrix.length; i++){
             for(int j = 0; j < normalizeMatrix[i].length; j++){
-                prefereneVectors[i] += normalizeMatrix[i][j];
+                preferenceVector[i] += normalizeMatrix[i][j];
             }
-            prefereneVectors[i] /= normalizeMatrix[i].length;
+            preferenceVector[i] /= normalizeMatrix[i].length;
         }
-        return prefereneVectors;
+        return preferenceVector;
     }
 
-    public double[] getMatrixCompTimesVectorPref(double[][] comparisonMatrix, double[] preferenceVector){
-        double[] result = new double[preferenceVector.length];
+    public double[] getMatrixCompTimesVectorPref(){
+        this.matrixMultiplication = new double[preferenceVector.length];
         for (int i = 0; i < comparisonMatrix.length; i++){
             for(int j = 0; j < comparisonMatrix[i].length; j++){
-                result[i] += comparisonMatrix[i][j]*preferenceVector[j];
+                matrixMultiplication[i] += comparisonMatrix[i][j]*preferenceVector[j];
             }
         }
-        return result;
+        return matrixMultiplication;
     }
 
-    public double getLambdaMax(double[] preferenceVector,double[] matrixMultiplication){
+    public double getLambdaMax(){
         double result = 0;
         for (int i = 0; i < preferenceVector.length; i++){
             result += matrixMultiplication[i] / preferenceVector[i];
         }
-        return  result / preferenceVector.length;
+        this.lambdaMax =   result / preferenceVector.length;
+
+        return this.lambdaMax;
     }
 
-    public double getConsistencyIndex(double lambdaMax,double criteria){
-        return (lambdaMax - criteria) / (criteria-1);
+    public double getConsistencyIndex(double criteria){
+        this.consistencyIndex = (lambdaMax - criteria) / (criteria-1);
+        return this.consistencyIndex;
     }
 
-    public double getConsistencyRatio(double consistencyIndex,double criteria, HashMap<Double,Double> ratioIndex){
-        return consistencyIndex / ratioIndex.get(criteria);
+    public double getConsistencyRatio(double criteria, HashMap<Double,Double> ratioIndex){
+        this.consistencyRatio = consistencyIndex / ratioIndex.get(criteria);
+        return this.consistencyRatio;
     }
 
-    public boolean isConsitent(double consistencyRatio){
+    public boolean isConsitent(){
         return (consistencyRatio <= 0.1);
     }
 
     public void useAHPToGetConsistency(File file) throws IOException {
-        HashMap ratioIndex = new HashMap();
+        HashMap<Double,Double> ratioIndex = new HashMap();
         ratioIndex.put(1.0,0.0);
         ratioIndex.put(2.0,0.0);
         ratioIndex.put(3.0,0.58);
@@ -103,30 +127,21 @@ public class AHP {
         ratioIndex.put(9.0,1.45);
         ratioIndex.put(10.0,1.49);
 
-        double[][] comparisonMatrix = createComparisonMatrix(file);
-        double criteria = Double.valueOf(comparisonMatrix.length);
+        double criteria = getComparisonMatrix(file).length;
         System.out.println("Kriteria = "+criteria);
-
-        double[][] matrixNormalization = normalizeMatrix(comparisonMatrix);
-        double[] preferenceVector = preferenceVector(matrixNormalization);
-        double[] matrixMultiplication = getMatrixCompTimesVectorPref(comparisonMatrix,preferenceVector);
-        double lambdaMax = getLambdaMax(preferenceVector,matrixMultiplication);
-        double consistencyIndex = getConsistencyIndex(lambdaMax,criteria);
-        double consistencyRatio = getConsistencyRatio(consistencyIndex,criteria,ratioIndex);
-        boolean isConsistent = isConsitent(consistencyRatio);
 
         System.out.println("Matriks Perbandingan");
         print2DArray(comparisonMatrix);
         System.out.println("Matriks Normalisasi");
-        print2DArray(matrixNormalization);
+        print2DArray(normalizeMatrix());
         System.out.println("Vektor preferensi");
-        print1DArray(preferenceVector);
+        print1DArray(createPreferenceVector());
         System.out.println("Perkalian Matrix");
-        print1DArray(matrixMultiplication);
-        System.out.println("Lambda max = "+lambdaMax);
-        System.out.println("Consistency Index = "+consistencyIndex);
-        System.out.println("Consistency ratio = "+consistencyRatio);
-        System.out.println("Is Consistent = "+isConsistent);
+        print1DArray(getMatrixCompTimesVectorPref());
+        System.out.println("Lambda max = "+getLambdaMax());
+        System.out.println("Consistency Index = "+getConsistencyIndex(criteria));
+        System.out.println("Consistency ratio = "+getConsistencyRatio(criteria,ratioIndex));
+        System.out.println("Is Consistent = "+isConsitent());
     }
 
     public void print2DArray(double[][] matrix){

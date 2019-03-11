@@ -1,50 +1,59 @@
 package filkom.skripsi;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class WeightedProduct {
 
+    private double[] vectorSi,vectorVi;
+    private int[] alternativeIndex;
+
     public double[] calculateVectorSi(double[] priorityWeight,double[][] alternativeData){
-        double[] result = new double[alternativeData.length];
+        this.vectorSi = new double[alternativeData.length];
         for (int i =0; i < alternativeData.length; i++){
-            result[i] = 1;
+            vectorSi[i] = 1;
             for (int j = 0; j < alternativeData[i].length; j++){
-                result[i] *= Math.pow(alternativeData[i][j],priorityWeight[j]);
+                vectorSi[i] *= Math.pow(alternativeData[i][j],priorityWeight[j]);
             }
         }
-        return result;
+        return vectorSi;
     }
 
-    public double[] calculateVectorVi(double[] vectorSi){
-        double[] result = new double[vectorSi.length];
+    public double[] calculateVectorVi(){
+        this.vectorVi = new double[vectorSi.length];
         double sumOfVectorSi = 0;
         for (int i = 0; i < vectorSi.length; i++){
             sumOfVectorSi += vectorSi[i];
         }
-        for (int i = 0; i < result.length; i++){
-            result[i] = vectorSi[i] / sumOfVectorSi;
+        for (int i = 0; i < vectorVi.length; i++){
+            vectorVi[i] = vectorSi[i] / sumOfVectorSi;
         }
-        return result;
+        return vectorVi;
     }
 
-    double[] selectionSort(double arr[])
+    double[] selectionSort(double[] arr)
     {
         int n = arr.length;
 
         // One by one move boundary of unsorted subarray
         for (int i = 0; i < n-1; i++)
         {
-            // Find the minimum element in unsorted array
-            int min_idx = i;
+            // Find the maximum element in unsorted array
+            int max_idx = i;
             for (int j = i+1; j < n; j++)
-                if (arr[j] > arr[min_idx])
-                    min_idx = j;
+                if (arr[j] > arr[max_idx]){
+                    max_idx = j;
+                }
 
             // Swap the found minimum element with the first
             // element
-            double temp = arr[min_idx];
-            arr[min_idx] = arr[i];
+            double temp = arr[max_idx];
+            arr[max_idx] = arr[i];
             arr[i] = temp;
+
+            int tempAlt = alternativeIndex[max_idx];
+            alternativeIndex[max_idx] = alternativeIndex[i];
+            alternativeIndex[i] = tempAlt;
         }
         return arr;
     }
@@ -68,6 +77,7 @@ public class WeightedProduct {
             dataCount++;
         }
         double[][] alternativeMatrix = new double[dataCount][criteriaCount];
+        alternativeIndex = new int[dataCount];
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             isAlternative = false;
@@ -82,6 +92,7 @@ public class WeightedProduct {
                 for(int j = 0; j < criteriaCount; j++){
                     alternativeMatrix[i][j] = Double.parseDouble(line.split(split)[j]);
                     System.out.print(alternativeMatrix[i][j]+" ");
+                    alternativeIndex[i] = i;
                 }
                 i++;
                 System.out.println();
@@ -94,18 +105,20 @@ public class WeightedProduct {
 
     public double[] getResultOfAHPWP(File file) throws IOException {
         AHP ahp = new AHP();
-        //ahp.useAHPToGetConsistency(file);
-        double[][] matrixAlternative = readData(file);
-       // ahp.print2DArray(matrixAlternative);
-        double[] vectorSi = calculateVectorSi(ahp.preferenceVector(ahp.normalizeMatrix(ahp.createComparisonMatrix(file))),matrixAlternative);
+        ahp.useAHPToGetConsistency(file);
+
         System.out.println("Vektor Si");
-        ahp.print1DArray(vectorSi);
-        double[] vectorVi = calculateVectorVi(vectorSi);
+        ahp.print1DArray(calculateVectorSi(ahp.getPreferenceVector(),readData(file)));
         System.out.println("Vektor Vi");
-        ahp.print1DArray(vectorVi);
+        ahp.print1DArray(calculateVectorVi());
         double[] result = selectionSort(vectorVi);
         System.out.println("final result");
         ahp.print1DArray(result);
+        System.out.println("Sequence Of Recommended Candidate : ");
+        for (int i = 0; i < alternativeIndex.length; i++){
+            int recommendedIndex = alternativeIndex[i] + 1;
+            System.out.println("Kandidat "+ recommendedIndex);
+        }
 
         return result;
     }
