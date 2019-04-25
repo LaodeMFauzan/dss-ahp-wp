@@ -124,7 +124,6 @@ public class WeightedProduct {
     }
 
     public static void main(String[] args) throws IOException {
-        WeightedProduct weightedProduct = new WeightedProduct();
-        weightedProduct.getResultOfAHPWP(new File("data/tes-data-ahp.csv"));
+
     }
 }
