@@ -7,6 +7,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         WeightedProduct weightedProduct = new WeightedProduct();
-        weightedProduct.getResultOfAHPWP(new File("data/manualisasi.csv"));
+        weightedProduct.getResultOfAHPWP(new File("data/data-workplace.csv"));
     }
 }

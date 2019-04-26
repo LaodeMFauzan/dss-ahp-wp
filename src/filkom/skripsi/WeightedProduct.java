@@ -31,7 +31,7 @@ public class WeightedProduct {
         return vectorVi;
     }
 
-    double[] selectionSort(double[] arr)
+    private double[] selectionSort(double[] arr)
     {
         int n = arr.length;
 
@@ -90,7 +90,7 @@ public class WeightedProduct {
                     continue;
                 }
                 for(int j = 0; j < criteriaCount; j++){
-                    alternativeMatrix[i][j] = Double.parseDouble(line.split(split)[j]);
+                    alternativeMatrix[i][j] = Double.parseDouble(line.split(",")[j]);
                     System.out.print(alternativeMatrix[i][j]+" ");
                     alternativeIndex[i] = i;
                 }

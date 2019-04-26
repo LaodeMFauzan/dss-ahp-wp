@@ -56,17 +56,22 @@ public class AHP {
     public double[][] normalizeMatrix(){
         double[] sumOfMatrix = new double[comparisonMatrix.length];
         this.normalizeMatrix = new double[comparisonMatrix.length][comparisonMatrix.length];
-        for (int i = 0; i < comparisonMatrix.length; i++){
-            for(int j = 0; j < comparisonMatrix[i].length; j++){
-                sumOfMatrix[i] += comparisonMatrix[j][i];
-            }
-        }
+        sumOfMatrix = computesumOfMatrix(sumOfMatrix);
         for (int i = 0; i < comparisonMatrix.length; i++){
             for(int j = 0; j < comparisonMatrix[i].length; j++){
                normalizeMatrix[i][j] = comparisonMatrix[i][j] / sumOfMatrix[j];
             }
         }
         return normalizeMatrix;
+    }
+
+    public double[] computesumOfMatrix(double[] sumOfMatrix){
+        for (int i = 0; i < comparisonMatrix.length; i++){
+            for(int j = 0; j < comparisonMatrix[i].length; j++){
+                sumOfMatrix[i] += comparisonMatrix[j][i];
+            }
+        }
+        return sumOfMatrix;
     }
 
     public double[] createPreferenceVector(){
