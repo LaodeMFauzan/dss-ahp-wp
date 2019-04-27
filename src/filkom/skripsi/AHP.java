@@ -30,7 +30,7 @@ public class AHP {
         return matrixMultiplication;
     }
 
-    public double[][] getComparisonMatrix(File file) throws IOException {
+    private double[][] getComparisonMatrix(File file) throws IOException {
         String line = "";
         int i = 0;
         String split = ",";
@@ -53,7 +53,7 @@ public class AHP {
         return comparisonMatrix;
     }
 
-    public double[][] normalizeMatrix(){
+    private double[][] normalizeMatrix(){
         double[] sumOfMatrix = new double[comparisonMatrix.length];
         this.normalizeMatrix = new double[comparisonMatrix.length][comparisonMatrix.length];
         sumOfMatrix = computesumOfMatrix(sumOfMatrix);
@@ -65,7 +65,7 @@ public class AHP {
         return normalizeMatrix;
     }
 
-    public double[] computesumOfMatrix(double[] sumOfMatrix){
+    private double[] computesumOfMatrix(double[] sumOfMatrix){
         for (int i = 0; i < comparisonMatrix.length; i++){
             for(int j = 0; j < comparisonMatrix[i].length; j++){
                 sumOfMatrix[i] += comparisonMatrix[j][i];
@@ -74,7 +74,7 @@ public class AHP {
         return sumOfMatrix;
     }
 
-    public double[] createPreferenceVector(){
+    private double[] createPreferenceVector(){
         this.preferenceVector = new double[normalizeMatrix.length];
         for (int i = 0; i < normalizeMatrix.length; i++){
             for(int j = 0; j < normalizeMatrix[i].length; j++){
@@ -85,7 +85,7 @@ public class AHP {
         return preferenceVector;
     }
 
-    public double[] getMatrixCompTimesVectorPref(){
+    private double[] getMatrixCompTimesVectorPref(){
         this.matrixMultiplication = new double[preferenceVector.length];
         for (int i = 0; i < comparisonMatrix.length; i++){
             for(int j = 0; j < comparisonMatrix[i].length; j++){
@@ -95,7 +95,7 @@ public class AHP {
         return matrixMultiplication;
     }
 
-    public double getLambdaMax(){
+    private double getLambdaMax(){
         double result = 0;
         for (int i = 0; i < preferenceVector.length; i++){
             result += matrixMultiplication[i] / preferenceVector[i];
@@ -105,21 +105,21 @@ public class AHP {
         return this.lambdaMax;
     }
 
-    public double getConsistencyIndex(double criteria){
+    private double getConsistencyIndex(double criteria){
         this.consistencyIndex = (lambdaMax - criteria) / (criteria-1);
         return this.consistencyIndex;
     }
 
-    public double getConsistencyRatio(double criteria, HashMap<Double,Double> ratioIndex){
+    private double getConsistencyRatio(double criteria, HashMap<Double, Double> ratioIndex){
         this.consistencyRatio = consistencyIndex / ratioIndex.get(criteria);
         return this.consistencyRatio;
     }
 
-    public boolean isConsitent(){
+    private boolean isConsitent(){
         return (consistencyRatio <= 0.1);
     }
 
-    public void useAHPToGetConsistency(File file) throws IOException {
+    void useAHPToGetConsistency(File file) throws IOException {
         HashMap<Double,Double> ratioIndex = new HashMap();
         ratioIndex.put(1.0,0.0);
         ratioIndex.put(2.0,0.0);
@@ -150,9 +150,9 @@ public class AHP {
     }
 
     public void print2DArray(double[][] matrix){
-        for (int i = 0; i < matrix.length; i++){
-            for (int j = 0; j < matrix[i].length; j++){
-                System.out.print(matrix[i][j]+" ");
+        for (double[] matrix1 : matrix) {
+            for (double v : matrix1) {
+                System.out.print(v + " ");
             }
             System.out.println();
         }
@@ -160,8 +160,8 @@ public class AHP {
     }
 
     public void print1DArray(double[] arr){
-        for (int i = 0; i < arr.length; i++){
-            System.out.println(arr[i]);
+        for (double v : arr) {
+            System.out.println(v);
         }
         System.out.println();
     }

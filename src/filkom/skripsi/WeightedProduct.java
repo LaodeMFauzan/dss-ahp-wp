@@ -1,14 +1,13 @@
 package filkom.skripsi;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class WeightedProduct {
 
     private double[] vectorSi,vectorVi;
     private int[] alternativeIndex;
 
-    public double[] calculateVectorSi(double[] priorityWeight,double[][] alternativeData){
+    private double[] calculateVectorSi(double[] priorityWeight, double[][] alternativeData){
         this.vectorSi = new double[alternativeData.length];
         for (int i =0; i < alternativeData.length; i++){
             vectorSi[i] = 1;
@@ -19,11 +18,11 @@ public class WeightedProduct {
         return vectorSi;
     }
 
-    public double[] calculateVectorVi(){
+    private double[] calculateVectorVi(){
         this.vectorVi = new double[vectorSi.length];
         double sumOfVectorSi = 0;
-        for (int i = 0; i < vectorSi.length; i++){
-            sumOfVectorSi += vectorSi[i];
+        for (double v : vectorSi) {
+            sumOfVectorSi += v;
         }
         for (int i = 0; i < vectorVi.length; i++){
             vectorVi[i] = vectorSi[i] / sumOfVectorSi;
@@ -31,8 +30,8 @@ public class WeightedProduct {
         return vectorVi;
     }
 
-    private double[] selectionSort(double[] arr)
-    {
+    // Use selection sort to sort the result
+    private double[] selectionSort(double[] arr) {
         int n = arr.length;
 
         // One by one move boundary of unsorted subarray
@@ -58,8 +57,8 @@ public class WeightedProduct {
         return arr;
     }
 
-    public double[][] readData(File file) throws IOException {
-        String line = "";
+    private double[][] readData(File file) throws IOException {
+        String line;
         int i = 0;
         String split = ",";
         boolean isAlternative = false;
@@ -103,10 +102,9 @@ public class WeightedProduct {
         return alternativeMatrix;
     }
 
-    public double[] getResultOfAHPWP(File file) throws IOException {
+    double[] getResultOfAHPWP(File file) throws IOException {
         AHP ahp = new AHP();
         ahp.useAHPToGetConsistency(file);
-
         System.out.println("Vektor Si");
         ahp.print1DArray(calculateVectorSi(ahp.getPreferenceVector(),readData(file)));
         System.out.println("Vektor Vi");
@@ -115,15 +113,15 @@ public class WeightedProduct {
         System.out.println("final result");
         ahp.print1DArray(result);
         System.out.println("Sequence Of Recommended Candidate : ");
-        for (int i = 0; i < alternativeIndex.length; i++){
-            int recommendedIndex = alternativeIndex[i] + 1;
-            System.out.println("Kandidat "+ recommendedIndex);
+        for (int alternativeIndex1 : alternativeIndex) {
+            int recommendedIndex = alternativeIndex1 + 1;
+            System.out.println("Kandidat " + recommendedIndex);
         }
 
         return result;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
 
     }
 }
