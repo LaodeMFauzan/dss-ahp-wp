@@ -18,17 +18,6 @@ public class AHP {
         return preferenceVector;
     }
 
-    public double[][] getComparisonMatrix() {
-        return comparisonMatrix;
-    }
-
-    public double[][] getNormalizeMatrix() {
-        return normalizeMatrix;
-    }
-
-    public double[] getMatrixMultiplication() {
-        return matrixMultiplication;
-    }
 
     private double[][] getComparisonMatrix(File file) throws IOException {
         String line = "";
@@ -60,6 +49,7 @@ public class AHP {
         for (int i = 0; i < comparisonMatrix.length; i++){
             for(int j = 0; j < comparisonMatrix[i].length; j++){
                normalizeMatrix[i][j] = comparisonMatrix[i][j] / sumOfMatrix[j];
+
             }
         }
         return normalizeMatrix;

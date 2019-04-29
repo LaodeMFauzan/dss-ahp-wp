@@ -102,7 +102,7 @@ public class WeightedProduct {
         return alternativeMatrix;
     }
 
-    double[] getResultOfAHPWP(File file) throws IOException {
+    void getResultOfAHPWP(File file) throws IOException {
         AHP ahp = new AHP();
         ahp.useAHPToGetConsistency(file);
         System.out.println("Vektor Si");
@@ -117,8 +117,6 @@ public class WeightedProduct {
             int recommendedIndex = alternativeIndex1 + 1;
             System.out.println("Kandidat " + recommendedIndex);
         }
-
-        return result;
     }
 
     public static void main(String[] args)  {
