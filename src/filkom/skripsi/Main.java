@@ -18,6 +18,11 @@ public class Main extends Application {
             URL url = new File("src/filkom/skripsi/gui/upload_file_layout.fxml").toURL();
             Parent root = FXMLLoader.load(url);
             Scene scene = new Scene(root);
+            String image = JavaFXApplication9.class.getResource("src/filkom/skripsi/style/decision-image.png").toExternalForm();
+            root.setStyle("-fx-background-image: url('" + image + "'); " +
+                    "-fx-background-position: center center; " +
+                    "-fx-background-repeat: stretch;");
+
             stage.setTitle("DS");
             stage.setScene(scene);
             stage.show();
