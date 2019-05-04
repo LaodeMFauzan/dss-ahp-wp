@@ -102,7 +102,7 @@ public class WeightedProduct {
         return alternativeMatrix;
     }
 
-    void getResultOfAHPWP(File file) throws IOException {
+    public void getResultOfAHPWP(File file) throws IOException {
         AHP ahp = new AHP();
         ahp.useAHPToGetConsistency(file);
         System.out.println("Vektor Si");

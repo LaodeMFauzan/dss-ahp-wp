@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane fx:id="ap_root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filkom.skripsi.controller.HomeController">
+   <children>
+      <Button fx:id="btn_open_file"  onMouseClicked="#handleClick" layoutX="242.0" layoutY="249.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="119.0" text="Open File" />
+      <Button fx:id="btn_compute"  onMouseClicked="#handleClick" layoutX="241.0" layoutY="304.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="119.0" text="Compute" />
+      <TableView fx:id="tb_file_input" layoutX="202.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="tc_file_name" prefWidth="98.0" text="File Name" />
+          <TableColumn fx:id="tc_criteria" prefWidth="101.0" text="Criteria" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
