@@ -1,6 +1,8 @@
 package filkom.skripsi.controller;
 
 import filkom.skripsi.WeightedProduct;
+import filkom.skripsi.model.FileProperties;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -25,14 +27,16 @@ public class HomeController {
     public AnchorPane ap_root;
 
     @FXML
-    public TableView tb_file_input;
+    public TableView<FileProperties> tb_file_input;
     @FXML
-    public TableColumn tc_file_name;
+    public TableColumn<FileProperties, String> tc_file_name;
     @FXML
-    public TableColumn tc_criteria;
+    public TableColumn<FileProperties, String> tc_criteria;
 
     private File inputFile;
-    
+
+    private ObservableList<FileProperties> fileProperties;
+
     @FXML
     public void handleClick(MouseEvent mouseEvent)  {
         if(mouseEvent.getSource() == btn_compute){
@@ -47,10 +51,11 @@ public class HomeController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("csv","*.csv"));
         fileChooser.setTitle("Choose the input file");
         inputFile = fileChooser.showOpenDialog(ap_root.getScene().getWindow());
+        setTableFile();
     }
 
     private void setTableFile(){
-        tc_file_name.setCellValueFactory(new PropertyValueFactory<>("filename"));
+        tc_file_name.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         tc_criteria.setCellValueFactory(new PropertyValueFactory<>("criteria"));
         if (inputFile!= null){
             //tb_file_input.setItems();
