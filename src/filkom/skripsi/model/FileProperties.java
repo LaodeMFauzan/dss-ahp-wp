@@ -4,6 +4,11 @@ public class FileProperties {
     private String fileName;
     private int criteria;
 
+    public FileProperties(String fileName, int criteria) {
+        this.fileName = fileName;
+        this.criteria = criteria;
+    }
+
     public String getFileName() {
         return fileName;
     }
