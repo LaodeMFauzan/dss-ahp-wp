@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="ap_root_result" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filkom.skripsi.controller.ResultController">
    <children>
-      <TableView layoutX="158.0" layoutY="79.0" prefHeight="242.0" prefWidth="285.0">
+      <TableView fx:id="tb_output" layoutX="158.0" layoutY="79.0" prefHeight="242.0" prefWidth="285.0">
         <columns>
           <TableColumn prefWidth="146.0" text="Kandidat" />
           <TableColumn prefWidth="138.0" text="Vektor Preferensi" />

@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -52,16 +53,27 @@ public class HomeController {
 
     private int numOfCriteria;
 
+    private static WeightedProduct WEIGHTED_PRODUCT;
+
     @FXML
-    public void handleClick(MouseEvent mouseEvent) throws IOException {
+    public void handleClick(MouseEvent mouseEvent) {
         if (mouseEvent.getSource() == btn_compute) {
             computeAHP_WP();
-            ScreenController screenController = new ScreenController(ap_root.getScene());
-            URL url = new File("src/filkom/skripsi/gui/result_layout.fxml").toURL();
-            screenController.addScreen("Result", FXMLLoader.load(url));
-            screenController.activate("Result");
+            goToResult();
         } else if (mouseEvent.getSource() == btn_open_file) {
             openFile();
+        }
+    }
+
+    private void goToResult(){
+        ScreenController screenController = new ScreenController(ap_root.getScene());
+        URL url = null;
+        try {
+            url = new File("src/filkom/skripsi/gui/result_layout.fxml").toURL();
+            screenController.addScreen("Result", FXMLLoader.load(url));
+            screenController.activate("Result");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -85,16 +97,24 @@ public class HomeController {
     }
 
     private void computeAHP_WP() {
-        WeightedProduct weightedProduct = new WeightedProduct();
+        WEIGHTED_PRODUCT = new WeightedProduct();
         try {
             if (inputFile != null) {
-                weightedProduct.getResultOfAHPWP(inputFile);
+                WEIGHTED_PRODUCT.getResultOfAHPWP(inputFile);
             } else {
                 showAlertBox();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static WeightedProduct getWeightedProduct() {
+        return WEIGHTED_PRODUCT;
+    }
+
+    public static void setWeightedProduct(WeightedProduct weightedProduct) {
+        WEIGHTED_PRODUCT = weightedProduct;
     }
 
     private void showAlertBox() {

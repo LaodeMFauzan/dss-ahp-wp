@@ -6,6 +6,7 @@ public class WeightedProduct {
 
     private double[] vectorSi,vectorVi;
     private int[] alternativeIndex;
+    private int[] recommendedIndex;
 
     private double[] calculateVectorSi(double[] priorityWeight, double[][] alternativeData){
         this.vectorSi = new double[alternativeData.length];
@@ -112,10 +113,11 @@ public class WeightedProduct {
         double[] result = selectionSort(vectorVi);
         System.out.println("final result");
         ahp.print1DArray(result);
+        recommendedIndex = new int[alternativeIndex.length];
         System.out.println("Sequence Of Recommended Candidate : ");
-        for (int alternativeIndex1 : alternativeIndex) {
-            int recommendedIndex = alternativeIndex1 + 1;
-            System.out.println("Kandidat " + recommendedIndex);
+        for (int i = 0; i < alternativeIndex.length; i++) {
+            recommendedIndex[i] = alternativeIndex[i] + 1;
+            System.out.println("Kandidat " + recommendedIndex[i]);
         }
     }
 

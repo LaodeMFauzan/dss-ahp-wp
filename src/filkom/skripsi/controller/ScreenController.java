@@ -1,5 +1,6 @@
 package filkom.skripsi.controller;
 
+import filkom.skripsi.WeightedProduct;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
@@ -24,4 +25,5 @@ public class ScreenController {
     protected void activate(String name){
         main.setRoot( screenMap.get(name) );
     }
+
 }
