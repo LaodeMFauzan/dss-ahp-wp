@@ -8,6 +8,22 @@ public class WeightedProduct {
     private int[] alternativeIndex;
     private int[] recommendedIndex;
 
+    public double[] getVectorVi() {
+        return vectorVi;
+    }
+
+    public void setVectorVi(double[] vectorVi) {
+        this.vectorVi = vectorVi;
+    }
+
+    public int[] getRecommendedIndex() {
+        return recommendedIndex;
+    }
+
+    public void setRecommendedIndex(int[] recommendedIndex) {
+        this.recommendedIndex = recommendedIndex;
+    }
+
     private double[] calculateVectorSi(double[] priorityWeight, double[][] alternativeData){
         this.vectorSi = new double[alternativeData.length];
         for (int i =0; i < alternativeData.length; i++){
