@@ -67,7 +67,7 @@ public class HomeController {
 
     private void goToResult(){
         ScreenController screenController = new ScreenController(ap_root.getScene());
-        URL url = null;
+        URL url;
         try {
             url = new File("src/filkom/skripsi/gui/result_layout.fxml").toURL();
             screenController.addScreen("Result", FXMLLoader.load(url));
@@ -109,7 +109,7 @@ public class HomeController {
         }
     }
 
-    public static WeightedProduct getWeightedProduct() {
+    static WeightedProduct getWeightedProduct() {
         return WEIGHTED_PRODUCT;
     }
 
