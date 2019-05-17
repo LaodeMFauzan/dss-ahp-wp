@@ -29,6 +29,9 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+/**
+ *
+ */
 public class HomeController {
 
     @FXML
@@ -65,6 +68,10 @@ public class HomeController {
         }
     }
 
+
+    /**
+     * show result page
+     */
     private void goToResult(){
         ScreenController screenController = new ScreenController(ap_root.getScene());
         URL url;
@@ -77,6 +84,10 @@ public class HomeController {
         }
     }
 
+
+    /**
+     *  open file dialog to choose input file
+     */
     private void openFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("csv", "*.csv"));
@@ -85,6 +96,10 @@ public class HomeController {
         setTableFile();
     }
 
+
+    /**
+     * set row in table after adding file
+     */
     private void setTableFile() {
         tc_file_name.setCellValueFactory(new PropertyValueFactory<>("fileName"));
         tc_criteria.setCellValueFactory(new PropertyValueFactory<>("criteria"));
@@ -96,6 +111,9 @@ public class HomeController {
         tb_file_input.setItems(fileProperties);
     }
 
+    /**
+     * get result of AHP WP
+     */
     private void computeAHP_WP() {
         WEIGHTED_PRODUCT = new WeightedProduct();
         try {
@@ -117,6 +135,9 @@ public class HomeController {
         WEIGHTED_PRODUCT = weightedProduct;
     }
 
+    /**
+     * Show alert box if input file is not selected
+     */
     private void showAlertBox() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input file not found");
@@ -129,6 +150,10 @@ public class HomeController {
         alert.showAndWait();
     }
 
+    /**
+     * @param fileName
+     * fill file properties for input tabe
+     */
     private void fillFileProperties(String[] fileName){
         if(fileProperties == null){
             fileProperties = FXCollections.observableArrayList(new FileProperties(fileName[fileName.length - 1], numOfCriteria));
@@ -137,6 +162,9 @@ public class HomeController {
         }
     }
 
+    /**
+     * get number of criteria in csv file
+     */
     private void countCriteriaMatrix() {
         numOfCriteria = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {

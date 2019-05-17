@@ -24,6 +24,11 @@ public class WeightedProduct {
         this.recommendedIndex = recommendedIndex;
     }
 
+    /**
+     * @param priorityWeight
+     * @param alternativeData
+     * @return vector Si
+     */
     private double[] calculateVectorSi(double[] priorityWeight, double[][] alternativeData){
         this.vectorSi = new double[alternativeData.length];
         for (int i =0; i < alternativeData.length; i++){
@@ -35,6 +40,9 @@ public class WeightedProduct {
         return vectorSi;
     }
 
+    /**
+     * @return vector Vi
+     */
     private double[] calculateVectorVi(){
         this.vectorVi = new double[vectorSi.length];
         double sumOfVectorSi = 0;
@@ -51,18 +59,14 @@ public class WeightedProduct {
     private double[] selectionSort(double[] arr) {
         int n = arr.length;
 
-        // One by one move boundary of unsorted subarray
         for (int i = 0; i < n-1; i++)
         {
-            // Find the maximum element in unsorted array
             int max_idx = i;
             for (int j = i+1; j < n; j++)
                 if (arr[j] > arr[max_idx]){
                     max_idx = j;
                 }
 
-            // Swap the found minimum element with the first
-            // element
             double temp = arr[max_idx];
             arr[max_idx] = arr[i];
             arr[i] = temp;
@@ -74,6 +78,11 @@ public class WeightedProduct {
         return arr;
     }
 
+    /**
+     * @param file
+     * @return alternative matrix
+     * @throws IOException
+     */
     private double[][] readData(File file) throws IOException {
         String line;
         int i = 0;

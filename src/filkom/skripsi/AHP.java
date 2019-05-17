@@ -19,6 +19,12 @@ public class AHP {
     }
 
 
+    /**
+     * @param file
+     * @return comparison matrix
+     * @throws IOException
+     * create comparison matrix from  csv file
+     */
     private double[][] getComparisonMatrix(File file) throws IOException {
         String line = "";
         int i = 0;
@@ -42,6 +48,10 @@ public class AHP {
         return comparisonMatrix;
     }
 
+    /**
+     * @return normalized matrix
+     * create normalized matrix from comparison matrix
+     */
     private double[][] normalizeMatrix(){
         double[] sumOfMatrix = new double[comparisonMatrix.length];
         this.normalizeMatrix = new double[comparisonMatrix.length][comparisonMatrix.length];
@@ -64,6 +74,10 @@ public class AHP {
         return sumOfMatrix;
     }
 
+    /**
+     * @return preference Vector
+     * create preference vector from normalize matrix
+     */
     private double[] createPreferenceVector(){
         this.preferenceVector = new double[normalizeMatrix.length];
         for (int i = 0; i < normalizeMatrix.length; i++){
@@ -75,6 +89,9 @@ public class AHP {
         return preferenceVector;
     }
 
+    /**
+     * @return matrix multiplication of comparison matrix and preference vector
+     */
     private double[] getMatrixCompTimesVectorPref(){
         this.matrixMultiplication = new double[preferenceVector.length];
         for (int i = 0; i < comparisonMatrix.length; i++){
@@ -85,6 +102,10 @@ public class AHP {
         return matrixMultiplication;
     }
 
+    /**
+     * @return lambda max
+     * get lambda max from matrix multiplication and preference vector
+     */
     private double getLambdaMax(){
         double result = 0;
         for (int i = 0; i < preferenceVector.length; i++){

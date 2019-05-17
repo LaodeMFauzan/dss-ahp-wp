@@ -64,6 +64,9 @@ public class ResultController implements Initializable {
         }
     }
 
+    /**
+     * go to home page
+     */
     private void goToHome() {
         ScreenController screenController = new ScreenController(ap_root_result.getScene());
         URL url ;
